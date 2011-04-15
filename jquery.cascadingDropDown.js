@@ -89,11 +89,16 @@
                             data: ((typeof config.postData == "function") ? config.postData() : config.postData) || $(source).serialize(),
                             success: function (data) {
                                 methods.reset();
-                                $.each(data, function () {
-                                    $this.append($(optionTag)
-                                        .attr("value", this.Value)
-                                        .text(this.Text));
-                                });
+				if($.isFunction(config.render) {
+				    config.render.call($this, data);
+				}
+				else {
+                                    $.each(data, function () {
+                                        $this.append($(optionTag)
+                                            .attr("value", this.Value)
+                                            .text(this.Text));
+                                    });
+				}
                                 methods.loaded();
                                 $.isFunction(config.onLoaded) && config.onLoaded.call($this);
                             },
@@ -126,6 +131,7 @@
         errorText: 'Error loading data.',
         postData: null,
         onLoading: null,
-        onLoaded: null
+        onLoaded: null,
+	render: null
     }
 })(jQuery);
